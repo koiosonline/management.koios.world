@@ -1,17 +1,25 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { IpfsProvider } from './providers/IpfsProvider';
+import { OrbitProvider } from './providers/OrbitProvider';
 import Home from './pages/Home';
 import Overview from './pages/Overview';
+import { Database } from './pages/Database';
 
 const App = () => {
   return (
     <Router>
-      <Route>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/overview" exact component={Overview} />
-        </Switch>
-      </Route>
+      <IpfsProvider>
+        <OrbitProvider>
+          <Route>
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/overview" exact component={Overview} />
+              <Route path="/database" exact component={Database} />
+            </Switch>
+          </Route>
+        </OrbitProvider>
+      </IpfsProvider>
     </Router>
   );
 };
