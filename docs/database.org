@@ -1,0 +1,23 @@
+#+TITLE: Koios Orbit Database
+#+author: Mathieu Gatsonides
+
+* Introduction
+The koios education platform uses a decentralized database to store all course data. User data will be stored by using [[https://developers.ceramic.network/streamtypes/overview/][Ceramic Streamtypes]]. Non user data for instance Worlds, Lessons and Literature will be stored on ipfs in a decentralized peer to peer database called [[https://github.com/orbitdb/orbit-db][OrbitDB]].
+
+* STRUCTURE
+The current filestructure is based upon json objects. Orbitdb's docstore is an easy to use database type because it stores json documents which can be indexed. This looks a lot like our previous filestructure.
+
+
+** Authentication
+Orbitdb's data is stored on ipfs. Which means every peer (participant) has read permissions on the data put into these database instances. Even though read-permissions aren't configurable, write-permissions are.
+Write-permissions are determined by the [[https://github.com/orbitdb/orbit-db/blob/main/GUIDE.md#custom-access-controller][access controller]] object added to the orbitdb instance in the objects properties.
+Since permissions can only be set and determined at db-instance level, every world should be separated in its own world-db-instance to enable multilayer permissions. Eventually, every world-db-instances should be put inside a parent db to index all worlds. Using the aforementioned structure enables to set the permission for each distinct world.
+
+** Template
+Volledige template als simpel uml model >> image
+
+Overall world-db holding all world-instances
+Template in json
+
+One world-instance
+Template in json

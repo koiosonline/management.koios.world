@@ -4,25 +4,30 @@ import { useIpfs } from '../providers/IpfsProvider';
 import useOrbitDb from '../components/util/useOrbitDb';
 
 export const Database = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const { ipfs, ipfsLoaded } = useIpfs();
   const { orbit, database, recordsInDB } = useOrbitDb();
-  const [inputfield, setInputfield] = useState('');
+  const [worldname, setWorldname] = useState('');
+  const [urlname, setUrlname] = useState('');
+  const [description, setDescription] = useState('');
+  const [quiz, setQuiz] = useState('');
 
   useEffect(() => {
-    if (ipfsLoaded.current) {
-      ipfs.swarm
-        .connect(
-          '/dns4/mgatsonides.nl/tcp/4002/wss/p2p/12D3KooWRhMBxbNnDUD97Y2nV3VgGBXGGTtKiGwXjLbqjCyyktNC'
-        )
-        .then(
-          function (value) {
-            console.log('swarm connected message: ' + value);
-          },
-          function (error) {
-            console.error('Swarm not connected because of: ' + error);
-          }
-        );
-    }
+    // if (ipfsLoaded.current) {
+    //   ipfs.swarm
+    //     .connect(
+    //       '/dns4/mgatsonides.nl/tcp/4002/wss/p2p/12D3KooWRhMBxbNnDUD97Y2nV3VgGBXGGTtKiGwXjLbqjCyyktNC'
+    //     )
+    //     .then(
+    //       function (value: any) {
+    //         console.log('swarm connected message: ' + value);
+    //       },
+    //       function (error: any) {
+    //         console.error('Swarm not connected because of: ' + error);
+    //       }
+    //     );
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfsLoaded.current]);
 
@@ -42,8 +47,10 @@ export const Database = () => {
     if (recordsInDB) console.log(recordsInDB);
   }, [recordsInDB]);
 
-  const testHandler = () => {
-    database.put({ course: 'Hi', hoi: 'hallo' });
+  const updater = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    database.put({ course: 'Hello', hoi: worldname });
   };
 
   const showRecordsHandler = () => {
@@ -54,6 +61,8 @@ export const Database = () => {
     if (!recordsInDB) {
       return null;
     } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       return recordsInDB.keys().map((data) => <h3>data</h3>);
     }
   };
@@ -61,17 +70,55 @@ export const Database = () => {
   return (
     <div className="database container">
       <h1 className="database__header">Database</h1>
-      <button onClick={testHandler}>Test</button>
-      <button onClick={showRecordsHandler}>Show Records</button>
+      <button onClick={showRecordsHandler}>Show Records in console</button>
+      <br />
+      <br />
+      <br />
       <form>
-        <label>Input field</label>
+        <label>WorldName</label>
+        <br />
         <input
           type="text"
           required
-          value={inputfield}
-          onChange={(e) => setInputfield(e.target.value)}
+          value={worldname}
+          onChange={(e) => setWorldname(e.target.value)}
+        />
+
+        <br />
+        <br />
+        <label>UrlName</label>
+        <br />
+        <input
+          type="text"
+          required
+          value={urlname}
+          onChange={(e) => setUrlname(e.target.value)}
+        />
+
+        <br />
+        <br />
+        <label>UrlName</label>
+        <br />
+        <input
+          type="text"
+          required
+          value={urlname}
+          onChange={(e) => setUrlname(e.target.value)}
+        />
+
+        <br />
+        <br />
+        <label>UrlName</label>
+        <br />
+        <input
+          type="text"
+          required
+          value={urlname}
+          onChange={(e) => setUrlname(e.target.value)}
         />
       </form>
+      <br />
+      <button onClick={updater}>Update/Create Record</button>
     </div>
   );
 };

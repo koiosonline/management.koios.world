@@ -4,7 +4,9 @@ import useSetupOrbit from '../components/util/useSetupOrbit';
 import orbitContext from '../context/orbitContext';
 import { useIpfs } from '../providers/IpfsProvider';
 
-export const OrbitProvider = ({ children }) => {
+export const OrbitProvider = ({ children }: any) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const { ipfs, ipfsLoaded } = useIpfs();
   const [orbit] = useSetupOrbit(ipfs);
   const orbitLoaded = useRef(false);

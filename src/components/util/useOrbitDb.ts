@@ -3,7 +3,8 @@ import { useIpfs } from "../../providers/IpfsProvider";
 import { useOrbit } from "../../providers/OrbitProvider";
 
 const useOrbitDb = (options = {}) => {
-  
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const { orbit, orbitLoaded } = useOrbit();
   const [records, setRecords] = useState(null);
   const [db, setDb] = useState(null);
@@ -28,15 +29,15 @@ const useOrbitDb = (options = {}) => {
         
       };
   
-      worlds.events.on("replicate", (address) => {
+      worlds.events.on("replicate", (address:any) => {
         console.log("replicate");
       });
   
-      worlds.events.on("replicated", (address) => {
+      worlds.events.on("replicated", (address:any) => {
         refreshDb();
       });
   
-      worlds.events.on("write", (address) => {
+      worlds.events.on("write", (address:any) => {
         refreshDb();
       });
       refreshDb();

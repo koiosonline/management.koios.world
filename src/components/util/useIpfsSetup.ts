@@ -1,5 +1,5 @@
 import { useEffect, useState, useDebugValue } from "react";
-import IPFS from "ipfs";
+import * as IPFS from "ipfs-core";
 
 
 // window.ipfsLoaded hack to keep a global ipfs instance

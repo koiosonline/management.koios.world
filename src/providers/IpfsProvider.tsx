@@ -4,7 +4,7 @@ import useIpfsSetup from '../components/util/useIpfsSetup';
 import ipfsContext from '../context/ipfsContext';
 import IPFS_CONFIG from '../components/util/ipfs-config';
 
-export const IpfsProvider = ({ children }) => {
+export const IpfsProvider = ({ children }: any) => {
   const [ipfs] = useIpfsSetup(IPFS_CONFIG);
   const ipfsLoaded = useRef(false);
   const [value1, setValue1] = useState<any>({ ipfs, ipfsLoaded });
