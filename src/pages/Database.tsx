@@ -1,7 +1,10 @@
 //imports
 import { useContext, useEffect, useState } from 'react';
 import { useIpfs } from '../providers/IpfsProvider';
-import useOrbitDb from '../components/util/useOrbitDb';
+import useOrbitDb, {
+  addWorld,
+  deleteWorld,
+} from '../components/util/useOrbitDb';
 
 export const Database = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -10,6 +13,7 @@ export const Database = () => {
   const { orbit, database, recordsInDB } = useOrbitDb();
   const [worldname, setWorldname] = useState('');
   const [urlname, setUrlname] = useState('');
+  const [worldCID, setWorldcid] = useState('');
   const [description, setDescription] = useState('');
   const [quiz, setQuiz] = useState('');
 
@@ -48,9 +52,11 @@ export const Database = () => {
   }, [recordsInDB]);
 
   const updater = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    database.put({ course: 'Hello', hoi: worldname });
+    addWorld(database, worldname, worldCID, recordsInDB);
+  };
+
+  const deleter = () => {
+    deleteWorld(database, worldname, recordsInDB);
   };
 
   const showRecordsHandler = () => {
@@ -83,42 +89,22 @@ export const Database = () => {
           value={worldname}
           onChange={(e) => setWorldname(e.target.value)}
         />
-
         <br />
         <br />
-        <label>UrlName</label>
-        <br />
-        <input
-          type="text"
-          required
-          value={urlname}
-          onChange={(e) => setUrlname(e.target.value)}
-        />
-
-        <br />
-        <br />
-        <label>UrlName</label>
+        <label>WorldCID</label>
         <br />
         <input
           type="text"
           required
-          value={urlname}
-          onChange={(e) => setUrlname(e.target.value)}
-        />
-
-        <br />
-        <br />
-        <label>UrlName</label>
-        <br />
-        <input
-          type="text"
-          required
-          value={urlname}
-          onChange={(e) => setUrlname(e.target.value)}
+          value={worldCID}
+          onChange={(e) => setWorldcid(e.target.value)}
         />
       </form>
       <br />
       <button onClick={updater}>Update/Create Record</button>
+      <br />
+      <br />
+      <button onClick={deleter}>Delete</button>
     </div>
   );
 };

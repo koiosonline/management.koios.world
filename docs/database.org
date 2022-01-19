@@ -18,6 +18,65 @@ Volledige template als simpel uml model >> image
 
 Overall world-db holding all world-instances
 Template in json
+#+begin_src js
+{course: worldname, CID: orbitCID}
+#+end_src
 
-One world-instance
+One world-instance (course-instance)
 Template in json
+#+begin_src js
+{
+    course: "coursename",
+    url: "url",
+    description: "description",
+    quiz: "quiz",
+    quickLinks:{
+                {
+                    linkTitle: "Course info",
+                    linkUrl: "https://"
+                },
+                {
+                    linkTitle: "Course info",
+                    linkUrl: "https://"
+                }
+               },
+    content:{
+                {
+                    title: "Blockchain level 1",
+                    videoinfo: {},
+                    data: {},
+                    subtitle: "Basic introduction"
+                },
+                {}
+            },
+    earn:{
+            {
+                title: "Sidejobs",
+                linkUrl: "/link"
+            },
+            {}
+         },
+    connect:{
+                title: "Blackbirds",
+                linkUrl: "/link"
+            },
+            {}
+    team:{
+            subtitle: "When you join koios",
+            p1: "This includes Field experts",
+            p2: "",
+            members:{
+                        {
+                            name: "Gerard Persoon",
+                            imageUrl : "https://cdn.discordapp.com/avatars/525687122233917471/a5206ac46ce91d176a22b99ce947ef2d.png?size=256"
+                            description : "Deep into the technical details of blockchains"
+                            twitterLink : "https://twitter.com/gpersoon"
+                            twitterHandle : "@gpersoon"
+                            discordLink : "https://discord.com/users/525687122233917471"
+                            discordHandle : "Gerard Persoon"
+                        },
+                        {}
+                    }
+         }
+}
+#+end_src
