@@ -5,7 +5,9 @@ import { OrbitProvider } from './providers/OrbitProvider';
 import Home from './pages/Home';
 import Overview from './pages/Overview';
 import { Database } from './pages/Database';
-
+/**
+ * The management koios webapp has three routes. / -> root, overview and database
+ */
 const App = () => {
   return (
     <Router>

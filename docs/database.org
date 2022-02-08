@@ -2,10 +2,10 @@
 #+author: Mathieu Gatsonides
 
 * Introduction
-The koios education platform uses a decentralized database to store all course data. User data will be stored by using [[https://developers.ceramic.network/streamtypes/overview/][Ceramic Streamtypes]]. Non user data for instance Worlds, Lessons and Literature will be stored on ipfs in a decentralized peer to peer database called [[https://github.com/orbitdb/orbit-db][OrbitDB]].
+The koios education platform uses a decentralized database to store all world and course data. User data will/can be stored by using [[https://developers.ceramic.network/streamtypes/overview/][Ceramic Streamtypes]]. Non user data for instance Worlds, Lessons and Literature will be stored on [[https://github.com/ipfs/ipfs][IPFS]] in a decentralized peer to peer database called [[https://github.com/orbitdb/orbit-db][OrbitDB]].
 
 * STRUCTURE
-The current filestructure is based upon json objects. Orbitdb's docstore is an easy to use database type because it stores json documents which can be indexed. This looks a lot like our previous filestructure.
+The current filestructure for storing non user data is based upon multiple json files. These json files hold info about all non user data. Also they refer to other json files to get a structured layered design/format. Orbitdb's [[https://github.com/orbitdb/orbit-db-docstore][docstore]] is a decentralised datastorage solution of OrbitDB which is the most similar to our current filestructure. An OrbitDB docsore stores json documents which can be indexed.
 
 
 ** Authentication
@@ -14,15 +14,17 @@ Write-permissions are determined by the [[https://github.com/orbitdb/orbit-db/bl
 Since permissions can only be set and determined at db-instance level, every world should be separated in its own world-db-instance to enable multilayer permissions. Eventually, every world-db-instances should be put inside a parent db to index all worlds. Using the aforementioned structure enables to set the permission for each distinct world.
 
 ** Template
-Volledige template als simpel uml model >> image
+*Top Level world-db holding all world-instances*
 
-Overall world-db holding all world-instances
 Template in json
 #+begin_src js
-{course: worldname, CID: orbitCID}
+{
+    course: "worldname",
+    CID: "orbitCID"
+}
 #+end_src
 
-One world-instance (course-instance)
+*One world-instance (course-instance)*
 Template in json
 #+begin_src js
 {

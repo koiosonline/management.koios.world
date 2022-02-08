@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Docs
+
+Check the folder /doc for documentation about the koios orbitdb
+
+The project can be installed with `npm i`
+It can be runned with `npm start`
+
+When the live server opens you can go to the /database path to see the demo
+
 ## Available Scripts
 
 In the project directory, you can run:

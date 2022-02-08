@@ -3,33 +3,68 @@ import { useIpfs } from "../../providers/IpfsProvider";
 import { useOrbit } from "../../providers/OrbitProvider";
 
 
-
-export const addWorld = async (database: any, worldname: string, orbitCID: string, recordsInDB: any) => {
-  const existing = database.get(worldname);;
-  if(!existing){
-    const cid = await database.put({course: worldname, CID: orbitCID});
-    return cid;
+/**
+ * Adds or updates a world entry in the top level world-db indexed by its worldname
+ * 
+ * Uses the following structure:
+ * 
+ * {
+ *    course: "worldname",
+ *    CID: "orbitCID"
+ * }
+ * 
+ * @param database The orbit docstore database object that is provided by useorbitdb hook
+ * @param worldname The worldname of the soon to be added world
+ * @param orbitCID The CID (location) of the soon to be added world
+ * @returns A multihash of the added entry as a string
+ */
+export const addWorld = async (database: any, worldname: string, orbitCID: string) => {
+  const existing = database.get(worldname);
+  if(isEmpty(existing)){
+    const multihash = await database.put({course: worldname, CID: orbitCID});
+    return multihash;
   } else {
-    return await updateWorld(database, worldname, orbitCID, recordsInDB, existing);
+    return await updateWorld(database, worldname, orbitCID, existing);
   }
 };
 
-const updateWorld = async (database: any, worldname: string, orbitCID: string, recordsInDB: any, existing: any) => {
-  existing.course = worldname;
-  existing.CID = orbitCID;
-  return await database.put(existing);
+/**
+ * This function updates the orbitCID of the specified world entry (provided by worldname)
+ * 
+ * @param database The orbit docstore database object that is provided by useorbitdb hook
+ * @param worldname The worldname of the soon to be changed world
+ * @param orbitCID  The new CID (location) of the provided world
+ * @param existing The existing entry which will be modified/manipulated
+ * @returns A multihash of the added entry as a string
+ */
+const updateWorld = async (database: any, worldname: string, orbitCID: string, existing: any) => {
+  existing[0].course = worldname;
+  existing[0].CID = orbitCID;
+  return await database.put(existing[0]);
 };
 
-export const deleteWorld = async (database: any, worldname: string, recordsInDB: any) => {
+/**
+ * This function deletes a world entry in the top level world-db
+ * 
+ * @param database The orbit docstore database object that is provided by useorbitdb hook
+ * @param worldname The worldname of the soon to be deleted world entry
+ * @returns the multihash of the entry as a String
+ */
+export const deleteWorld = async (database: any, worldname: string) => {
   if(database.get(worldname).length>0) {return await database.del(worldname);}
 };
 
-export const addCourse = async (orbit: any, coursename: string) => {
-  //Check if it already exists
-  //updateCourse()
-  //else create and then update
+/**
+ * Helper function to test if an object is empty
+ * @param obj The object that needs to be checked if it is empty
+ * @returns true/1 when an object is empty.
+ */
+function isEmpty(obj: any) {
+  return Object.keys(obj).length === 0;
+}
 
-  //Define options
+
+export const addCourse = async (orbit: any, worlddb: any, coursename: string, url: string, description: string, quiz: string, quickLinks: any, content: any, earn: any, connect: any, team: any) => {
   const defaultOptions = {
     accessController: {write: ["*"]},
   };
@@ -37,16 +72,37 @@ export const addCourse = async (orbit: any, coursename: string) => {
     ...defaultOptions,
     indexBy: 'course'
   };
-  //create docstore
-  const courseContent = await orbit.docstore(coursename, courseOptions);
-  //fill docstore
-
-  return courseContent.id;
+  
+  const existing = worlddb.get(coursename);
+  let courseContent;
+  if(isEmpty(existing)) {
+    courseContent = await orbit.docstore(coursename, courseOptions);
+    console.log("Created datastore, accessible at CID: " + courseContent.id);
+  }
+  else {
+    console.log("Exists, The CID: " + existing[0].CID);
+    courseContent = await orbit.open(existing[0].CID, courseOptions);
+    await courseContent.load();
+  }
+  updateCourse(courseContent, coursename, url, description, quiz, quickLinks, content, earn, connect, team);
 };
 
-const updateCourse = async (coursedb: any, coursename: string, coursevar: any) => {
-  
-  coursedb.put({course:coursename, var:coursevar});
+const updateCourse = async (coursedb: any, coursename: string, url: string, description: string, quiz: string, quickLinks: any, content: any, earn: any, connect: any, team: any) => {
+  console.log(coursedb);
+  coursedb.put({course:coursename, url:url, description:description, quiz:quiz, quickLinks:quickLinks, content:content, earn:earn, connect:connect, team:team});
+};
+
+export const getCourse = async (orbit:any, CID:string) => {
+  const defaultOptions = {
+    accessController: {write: ["*"]},
+  };
+  const courseOptions = {
+    ...defaultOptions,
+    indexBy: 'course'
+  };
+  const courseContent = await orbit.open(CID, courseOptions);
+  await courseContent.load();
+  console.log(courseContent.get("")[0]);
 };
 
 const useOrbitDb = (options = {}) => {
